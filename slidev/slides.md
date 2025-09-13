@@ -228,6 +228,83 @@ slide_info: false
 
 - Ideal for complex workflows
 
+
+
+---
+layout: side-title
+color: amber
+align : rm-lm
+---
+
+:: title ::
+
+# A LangChain's Linear Chains
+
+LangChain introduced the idea of chaining together prompt templates, LLMs, tools, and memory in a sequential manner — perfect for simple workflows.
+
+:: content ::
+
+Highlight lines 2 and 3:
+
+```python 
+from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
+
+llm = OpenAI()
+
+# Prompt template
+prompt = PromptTemplate.from_template(
+    "Saya punya bahan utama {ingredient}. Tolong buatkan resep masakan sederhana dan enak."
+)
+
+# Format prompt
+final_prompt = prompt.format(ingredient="ayam fillet")
+
+# Panggil LLM langsung
+output = llm(final_prompt)
+print(output)
+```
+
+
+---
+layout: side-title
+align: l
+color: navy
+titlewidth: is-6
+---
+
+:: title ::
+
+# <mdi-code-braces /> Langchain
+
+LangChain introduced the idea of chaining together prompt templates, LLMs, tools, and memory in a sequential manner — perfect for simple workflows.
+
+:: content ::
+
+Langchain
+
+```python 
+from langchain.llms import OpenAI
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+from langchain.chains import SimpleSequentialChain
+
+# First LLM step: Generate a blog title
+llm = OpenAI()
+prompt1 = PromptTemplate.from_template("Write a catchy blog title about {topic}")
+chain1 = LLMChain(llm=llm, prompt=prompt1)
+
+# Second LLM step: Write an intro paragraph using the title
+prompt2 = PromptTemplate.from_template("Write an intro paragraph for the blog titled: {title}")
+chain2 = LLMChain(llm=llm, prompt=prompt2)
+
+# Combine them into a simple sequential chain
+sequential_chain = SimpleSequentialChain(chains=[chain1, chain2], verbose=True)
+
+output = sequential_chain.run("LangGraph and AI Workflows")
+print(output)This works great for one-shot tasks like translation or summarization. The flow is fixed: input → prompt → LLM → output.
+```
+
 ---
 layout: fact
 class: item-left

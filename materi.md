@@ -31,16 +31,17 @@ AI Agent
 - AI agent and langgraph
 --- (praktek)
 
-- langgraph studi kasus: basic chatbot
+- langgraph (graph: state, nodes, edges, condifional edges, start, tools, toolnode, startgraph, raunnable, messages)
+- langgraph studi kasus: basic chatbot 
 - langgraph js
 - Langgraph basic notebook
 - Langgraph lanjutan notebook
-- Studi kasus 
+- Studi kasus
 --- (penutup)
 
 - What's you learn
 - Resources video
-- Resources githubz repo
+- Resources github repo
 
 ## References
 - https://www.youtube.com/watch?v=VuVqupb0_8Y&list=PLNIQLFWpQMRXmns-7UarmPIR6DN7bgEzZ&index=2&ab_channel=HarishNeel%7CAI

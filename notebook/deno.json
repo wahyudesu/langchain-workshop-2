@@ -1,6 +1,0 @@
-{
-  "nodeModulesDir": true,
-  "imports": {
-    "@langchain/groq": "npm:@langchain/groq"
-  }
-}

@@ -1,0 +1,16 @@
+[project]
+name = "langgraph-studio"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain>=0.3.27",
+    "langchain-community>=0.3.29",
+    "langchain-experimental>=0.3.4",
+    "langchain-openai>=0.3.33",
+    "langchain-tavily>=0.2.11",
+    "langgraph>=0.6.7",
+    "langgraph-cli[inmem]>=0.4.2",
+    "langsmith>=0.4.27",
+]
