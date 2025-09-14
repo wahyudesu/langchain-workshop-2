@@ -132,16 +132,22 @@ color: navy
 :: right ::
 
 <div v-click>
-- Failure rate so high >70 %
+- Failure rate is very high (>70%)
 </div>
 <div v-click>
-- Framework too early
+- Frameworks are still immature
 </div>
 <div v-click>
-- Memory bottleneck
+- Memory bottlenecks
 </div>
 <div v-click>
-- In Production 
+- Messy system integration
+</div>
+<div v-click>
+- Difficult-to-handle hallucinations
+</div>
+<div v-click>
+- Inability to handle complex tasks
 </div>
 
 ---
@@ -266,10 +272,14 @@ class: my-cool-content-on-the-right
 slide_info: false
 ---
 
-# Why Langgraph and AI Agents Applications
+# Langgraph and AI Agent Applications
+
+Why Langgraph?  
+Because it's the most popular choice
 
 - Ideal for complex workflows
-- asdas
+- Low-level framework
+- Most extensive integrations
 
 ---
 layout: side-title

@@ -21,7 +21,9 @@ AI Agent
 ## Isi materi(Alur+outline), detail slides nya langsung di /slides.md
 --- (intro)
 
-- Hook(AI engineer, AI -> you must learn langchain)
+- Hook(Untuk hook di awal yah, perkembangan teknologi itu cepat banget yah, data udah nunjukin demand yang tinggi banget di bidang ini, seberapa cepat pertumbuhan market AI dan profesi AI sedoro ini cukup luas yah, data scientist, ml engineer, llm engineer, dan peluangnya luas sekali, sayangnya yang ngajari soal AI ini dikit, yah, langchain dan langgraph ini skill yang penting banget, sayangnya biaya untuk belajar ai tuh cukup mahal dan ini mungkin pertama di indo, thanks to dentech corp udah ngasih wadah ke kalian buat belajar langchain, hopefully dari materi ini bisa nyetak engineer lebih banyak lagi disini, tentu, nggak sekedar bisa bikin aja, tapi project yang dibuat tuh beneran bisa ngasih impact
+- konten linkedin, ada banyak proses dibaliknya, ga segampang itu juga, bagaimana membangun fitur ai yang efektif, tapi gapapa ya temen-temen, di materi ini kita bakal belajar dari nol, tentu aja ndak ngesolve sampai akhir, karena langchain dan langgraph sendiri cukup kompleks ya temen-temen dan ndak cukup kalau diajarkan dalam satu sesi seperti ini,  
+- masuk ke materi, topik utama kali ini adalah ai agent, 
 - Langchain overview (wrapping up materi kemarin)
 - What's LLM Application looks like
 - Why Langgraph?
