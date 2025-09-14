@@ -14,7 +14,7 @@ Code Agent: Has access to a Python REPL for generating code for data visualizati
 
 # Imports and Setup
 from langchain_openai import ChatOpenAI
-from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_tavily import TavilySearch
 from langchain_community.utilities.alpha_vantage import AlphaVantageAPIWrapper
 from langchain_experimental.tools import PythonREPLTool
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -28,6 +28,7 @@ from typing_extensions import TypedDict
 from pydantic import BaseModel
 import operator
 import functools
+from dataclasses import dataclass
 
 # Load environment variables
 from dotenv import load_dotenv
@@ -57,7 +58,7 @@ We initialize the Tavily search tool for the Web Search Agent.
 """
 
 # Tavily Search Tool
-tavily_tool = TavilySearchResults(max_results=5)
+tavily_tool = TavilySearch(max_results=5)
 
 """
 3. Alpha Vantage Tool

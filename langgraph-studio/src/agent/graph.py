@@ -31,6 +31,7 @@ class State(TypedDict):
 
 llm = init_chat_model("openai:gpt-4.1")
 
+# node function
 def chatbot(state: State):
     return {"messages": [llm.invoke(state["messages"])]}
 

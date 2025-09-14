@@ -8,14 +8,14 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 
-
 load_dotenv()
 
 # Initialize LLM
 llm = init_chat_model("openai:gpt-4.1")
 
+
 # Initialize tools
-tool = TavilySearch(max_results=2)
+tool = TavilySearch(max_results=3)
 tools = [tool]
 llm_with_tools = llm.bind_tools(tools)
 
@@ -28,6 +28,11 @@ def chatbot(state: State):
 workflow = StateGraph(State)
 
 # Add nodes to the graph
+
+# Start edge
+
+workflow.add_edge(START, "chatbot")
+
 # Node for chatbot
 workflow.add_node("chatbot", chatbot)
 # Node for tools
@@ -42,8 +47,6 @@ workflow.add_conditional_edges(
 )
 # Edge from tools back to chatbot
 workflow.add_edge("tools", "chatbot")
-# Start edge
-workflow.add_edge(START, "chatbot")
 
 # Compile the graph
 graph = workflow.compile()
