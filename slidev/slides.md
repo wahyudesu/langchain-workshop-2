@@ -33,7 +33,7 @@ seoMeta:
   ogImage: auto
   # ogImage: https://cover.sli.dev
 
-color: dark
+color: navy
 ---
 
 # AI Workshop
@@ -132,10 +132,16 @@ color: navy
 :: right ::
 
 <div v-click>
-- AI Agent production so hard
+- Failure rate so high >70 %
 </div>
 <div v-click>
-- Company says is so hard
+- Framework too early
+</div>
+<div v-click>
+- Memory bottleneck
+</div>
+<div v-click>
+- In Production 
 </div>
 
 ---
@@ -182,6 +188,29 @@ color: dark
 </div>
 
 ---
+color: navy
+---
+# AI Agent Intro
+
+AI Agent itu sederhana, mari kita buat simpel:
+
+1. Mikir dulu sebelum bertindak (step by step, human in the loop)
+2. Pake alat atau sumber luar (tools)
+3. Makin pintar seiring waktu (memory)
+
+**From Models to Agents**
+
+from single task -> breakdown task and delegating task -> orchestrator
+
+<div v-click>
+
+<Admonition title="AI Agent" color='amber-light'>
+Agents don't just follow instructions — they adapt and makes intelligent decisions about next steps based on what it learns during the process, similar to how we human operate.
+</Admonition>
+
+</div>
+
+---
 layout: two-cols-title
 columns: is-7
 color: navy
@@ -198,12 +227,11 @@ color: navy
 :: left ::
 
 <div class="flex justify-center items-center">
-  <img src="/framework.png" class="w-fit h-80" />
+  <img src="/framework.png" class="w-fit h-70" />
 </div>
 
 - **[Overview of leading frameworks](https://www.ibm.com/think/insights/top-ai-agent-frameworks)**
 - **[Choosing AI Agent frameworks](https://diamantai.substack.com/p/how-to-choose-your-ai-agent-framework)**
-
 
 :: right ::
 
@@ -211,7 +239,21 @@ color: navy
   <img src="/choose-framework.png" class="w-fit h-80" />
 </div>
 
+---
+color: navy
+---
+# Read more
 
+<div class="text-xl mt-8">
+
+https://blog.langchain.com/building-langgraph/
+
+https://github.com/humanlayer/12-factor-agents
+
+https://www.anthropic.com/engineering/building-effective-agents
+
+
+</div>
 
 ---
 layout: iframe-right
@@ -227,290 +269,297 @@ slide_info: false
 # Why Langgraph and AI Agents Applications
 
 - Ideal for complex workflows
-
-
-
----
-layout: side-title
-color: amber
-align : rm-lm
----
-
-:: title ::
-
-# A LangChain's Linear Chains
-
-LangChain introduced the idea of chaining together prompt templates, LLMs, tools, and memory in a sequential manner — perfect for simple workflows.
-
-:: content ::
-
-Highlight lines 2 and 3:
-
-```python 
-from langchain.llms import OpenAI
-from langchain.prompts import PromptTemplate
-
-llm = OpenAI()
-
-# Prompt template
-prompt = PromptTemplate.from_template(
-    "Saya punya bahan utama {ingredient}. Tolong buatkan resep masakan sederhana dan enak."
-)
-
-# Format prompt
-final_prompt = prompt.format(ingredient="ayam fillet")
-
-# Panggil LLM langsung
-output = llm(final_prompt)
-print(output)
-```
-
+- asdas
 
 ---
 layout: side-title
-align: l
 color: navy
-titlewidth: is-6
+align : lm-lm
 ---
 
 :: title ::
 
-# <mdi-code-braces /> Langchain
+# Langgraph Core
 
-LangChain introduced the idea of chaining together prompt templates, LLMs, tools, and memory in a sequential manner — perfect for simple workflows.
+LangGraph provides low-level supporting infrastructure for any long-running, stateful workflow or agent. LangGraph does not abstract prompts or architecture, and provides the following central benefits:
+:: content ::
+
+create an agent using prebuilt components:
+
+<<< ../langgraph.py
+
+---
+layout: side-title
+color: navy
+align : lm-lm
+---
+
+:: title ::
+
+# Graph
+
+At its core, LangGraph models agent workflows as graphs. You define the behavior of your agents using three key components:
 
 :: content ::
 
-Langchain
+-> `State`: A shared data structure that represents the current snapshot of your application. It can be any data type, but is typically defined using a shared state schema.
 
-```python 
-from langchain.llms import OpenAI
-from langchain.chains import LLMChain
-from langchain.prompts import PromptTemplate
-from langchain.chains import SimpleSequentialChain
+-> `Nodes`: Functions that encode the logic of your agents. They receive the current state as input, perform some computation or side-effect, and return an updated state.
 
-# First LLM step: Generate a blog title
-llm = OpenAI()
-prompt1 = PromptTemplate.from_template("Write a catchy blog title about {topic}")
-chain1 = LLMChain(llm=llm, prompt=prompt1)
+-> `Edges`: Functions that determine which Node to execute next based on the current state. They can be conditional branches or fixed transitions.
 
-# Second LLM step: Write an intro paragraph using the title
-prompt2 = PromptTemplate.from_template("Write an intro paragraph for the blog titled: {title}")
-chain2 = LLMChain(llm=llm, prompt=prompt2)
+---
+layout: side-title
+side: r
+color: navy
+titlewidth: is-2
+align: lm-lb
+---
 
-# Combine them into a simple sequential chain
-sequential_chain = SimpleSequentialChain(chains=[chain1, chain2], verbose=True)
+:: title ::
+ 
+# State
 
-output = sequential_chain.run("LangGraph and AI Workflows")
-print(output)This works great for one-shot tasks like translation or summarization. The flow is fixed: input → prompt → LLM → output.
+# <mdi-arrow-right />
+
+:: content ::
+
+-> The State is a shared data structure that holds the
+current information or context of the entire application.
+
+-> In simple terms, it is like the application’s memory,
+keeping track of the variables and data that nodes can
+access and modify as they execute.
+
+```python
+from typing import TypedDict, Annotated, Sequence
+from langchain_core.messages import HumanMessage, AIMessage
+from langgraph.graph import StateGraph, END
+
+class ConversationState(TypedDict):
+    messages: Annotated[Sequence[HumanMessage | AIMessage], "Conversation history"]
+    current_step: Annotated[str, "Current conversation step"]
+
+graph = StateGraph(ConversationState)
 ```
+
+`TypedDict`, `Pydantic Model`
+
+---
+layout: side-title
+side: r
+color: navy
+titlewidth: is-2
+align: lm-lb
+---
+
+:: title ::
+ 
+# Nodes
+
+# <mdi-arrow-right />
+
+:: content ::
+
+-> Nodes are individual functions or operations that perform specific tasks within the graph.
+
+-> Each node receives input (often the current state), processes it, and produces an output or an updated state.
+
+```python
+from langchain_openai import ChatOpenAI
+
+def respond_to_user(state: ConversationState) -> ConversationState:
+    messages = state["messages"]
+    model = ChatOpenAI()
+    response = model.invoke(messages)
+    new_messages = list(messages)
+    new_messages.append(response)
+    return {
+        "messages": new_messages,
+        "current_step": "response_generated"
+    }
+
+graph.add_node("respond_to_user", respond_to_user)
+```
+
+`Custom Node`, `START Node`, `END Node`, `Node Caching`
+
+---
+layout: side-title
+side: r
+color: navy
+titlewidth: is-2
+align: lm-lb
+---
+
+:: title ::
+ 
+# Edges
+
+# <mdi-arrow-right />
+
+:: content ::
+
+-> Edges are the connections between nodes that determine the flow of execution.
+
+-> They tell us which node should be executed next after the current one completes its task.
+
+
+```python
+graph.add_edge("node_a", "node_b")
+
+def route_based_on_step(state: ConversationState) -> str:
+    if state["current_step"] == "response_generated":
+        return "check_if_done"
+    else:
+        return "respond_to_user"
+
+graph.add_conditional_edges(
+    "respond_to_user",
+    route_based_on_step,
+    {
+        "check_if_done": "check_if_done",
+        "respond_to_user": "respond_to_user"
+    }
+)
+```
+
+`Normal Edges`, `Conditional Edges`, `Entry Point`, `Conditional Entry Point`
+
+
+---
+columns: is-8
+color: navy
+title: langgraph-component
+---
+
+<div class="flex justify-center items-center mb-8">
+  <img src="/langgraph-core.png" class="w-fit h-50" />
+</div>
+
+<div class="flex justify-center items-center">
+  <img src="/langgraph-core-2.png" class="w-fit h-60" />
+</div>
+
+---
+layout: top-title-two-cols
+color: navy
+align: l-lt-lt
+---
+
+:: title ::
+
+# LangGraph APIs
+
+
+:: left ::
+
+## Graph API
+
+<div class="ns-c-supertight text-sm">
+
+-> Deklaratif; mendefinisikan workflow sebagai graph / state graph.
+
+-> State eksplisit, dengan deklarasi state + reducer untuk update state.
+
+-> Checkpoint dibuat lebih granuler (setiap superstep / node)
+
+-> Mudah divisualisasikan sebagai graph 
+
+</div>
+
+```python
+from langgraph.graph import StateGraph,START, END
+from typing import TypedDict
+
+workflow = StateGraph(MyState)
+workflow.add_node("inc", increment)
+workflow.add_edge("inc", END)
+workflow.set_entry_point("inc")
+
+graph = workflow.compile()
+```
+
+<a href="https://langchain-ai.github.io/langgraph/concepts/low_level/" target="_blank" class=" mt-1">Graph API</a>
+
+:: right ::
+
+# Functional API
+
+<div class="ns-c-supertight text-sm">
+
+-> Imperatif/fungsional; memakai fungsi bawaan python, if, for, etc
+
+-> State otomatis dikelola dalam entrypoint / decorator, tidak perlu state global eksplisit antar fungsi.
+
+-> Checkpoint dibuat di entrypoint
+
+-> Tidak ada visualisasi graph statis
+
+</div>
+
+```python
+from langgraph.func import entrypoint, task
+
+@task
+def write_essay(topic: str) -> str:
+  """API call or data processing step"""
+
+@entrypoint()
+def workflow(topic: str) -> dict:
+  """simple workflow code in here"""
+```
+
+<a href="https://langchain-ai.github.io/langgraph/concepts/functional_api/#determinism" target="_blank" class=" mt-1">Functional API</a>
+
 
 ---
 layout: fact
 class: item-left
 ---
 
-# Let's Build! 🚀
+# Let's Practice! 🚀
 
 ## Get Started:
 
-```bash {}
-git clone https://github.com/wahyudesu/langchain-workshop
-cd rag
-uv venv
-.venv\Scripts\activate
-uv sync
-uv run chainlit run app.py -w
-```
+<<< ../README.md#getting
 
-<div class="mt-8 text-2xl">
-Run <code>app.py</code> and begin!
-</div>
-
-
----
-
-# Vector Database, Embeddings, Retrieval
-
-<div class="grid grid-cols-2 gap-8">
-
-<div>
-
-## Vector Databases
-
-**Storage for embeddings:**
-- **Chroma**: Open-source, easy to use
-- **Pinecone**: Managed, scalable
-- **Weaviate**: Hybrid search capabilities
-- **FAISS**: Facebook AI Similarity Search (free)
-
-**Choose based on:**
-- Data scale
-- Budget
-- Self-hosted vs managed
-
-</div>
-
-<div>
-
-## Embeddings
-
-**Convert text to vectors:**
-```python
-from langchain.embeddings import OpenAIEmbeddings
-
-embeddings = OpenAIEmbeddings()
-vectors = embeddings.embed_documents([
-    "Langchain is great",
-    "AI is powerful"
-])
-```
-
-**Alternatives:**
-- HuggingFace embeddings (free)
-- Cohere embeddings
-- Custom embeddings
-
-</div>
-
-</div>
 ---
 layout: side-title
-color: emerald-light
+color: navy
 align: rm-lm
-titlewidth: is-3
+titlewidth: is-2
 ---
 
-<StickyNote color="emerald-light" textAlign="left" width="180px"  v-drag="[719,291,180,180,16]">
-
-Don't worry if you don't understand all the details, yet we are still talking about **color schemes**.
-</StickyNote>
-
-
 :: title ::
-# Langchain
+# Project Structure
 
 
 :: content ::
 
-Or we can use the `emerald-light` scheme in a slide layout to set the overall color and style of a slide with a matching sticky note:
+<<< ../project-structure.md
 
-```md
+<Admonition title="Langgraph Studio (Beta)" color='amber-light'>
+</Admonition>
+
 ---
 layout: side-title
-color: emerald-light
+color: navy
 align: rm-lm
-titlewidth: is-3
+titlewidth: is-2
 ---
-```
-
----
-layout: side-title
-side: left
-color: violet
-titlewidth: is-4
-align: rm-lt
-title: Code Example
----
-
 
 :: title ::
-
-# <mdi-code-braces /> Langchain
-
-More cool code stuff
+# More references
 
 :: content ::
 
-Scrollable with clicks 🤯
+https://github.com/abhishekmaroon5/langgraph-cookbook/
 
-```ts {2|3|7|12}{maxHeight:'100px'}
-function helloworld() {
-  console.log('Hello, World 1!')
-  console.log('Hello, World 2!')
-  console.log('Hello, World 3!')
-  console.log('Hello, World 4!')
-  console.log('Hello, World 5!')
-  console.log('Hello, World 6!')
-  console.log('Hello, World 7!')
-  console.log('Hello, World 8!')
-  console.log('Hello, World 9!')
-  console.log('Hello, World 10!')
-  console.log('Hello, World 11!')
-}
-```
+https://github.com/langchain-ai/langgraph-101/agents/
 
-You can even edit the code in the browser
-
-```ts {monaco}
-console.log('HelloWorld')
-```
-
-You can even run the code in the browser
-
-```ts {monaco-run} {showOutputAt:'+1'}
-function distance(x: number, y: number) {
-  return Math.sqrt(x ** 2 + y ** 2)
-}
-console.log(distance(3, 4))
-```
-
-
----
-layout: center
----
-
-# Langchain JS via Cloudflare Worker
-
-<div class="grid grid-cols-2 gap-8">
-
-<div>
-
-## Cloudflare Workers Benefits
-
-- **Edge Computing**: Low latency globally
-- **Serverless**: No server management
-- **Durable Objects**: State management
-- **KV Storage**: Key-value database
-- **R2**: Object storage
-
-**Perfect for:**
-- Real-time chat applications
-- Global AI services
-- Low-latency RAG
-
-</div>
-
-<div>
-
-## Implementation Example
-
-```javascript
-import { OpenAI } from 'langchain/llms/openai';
-import { ConversationChain } from 'langchain/chains';
-import { BufferMemory } from 'langchain/memory';
-
-export default {
-  async fetch(request, env) {
-    const llm = new OpenAI({
-      openAIApiKey: env.OPENAI_API_KEY,
-      temperature: 0.7
-    });
-    
-    const memory = new BufferMemory();
-    const chain = new ConversationChain({ llm, memory });
-    
-    const { message } = await request.json();
-    const response = await chain.call({ input: message });
-    
-    return new Response(JSON.stringify({ response: response.response }));
-  }
-};
-```
-
-</div>
-
-</div>
+Learn more on :
+https://academy.langchain.com
 
 ---
 layout: center
@@ -520,9 +569,9 @@ layout: center
 
 ## What We Built
 
-- 🔄 **More know about Generative AI**
-- 🤖 **Know more about langchain**
-- 🎨 **How RAG Chat works**
+- 🔄 **More know about AI Agents**
+- 🤖 **Know concept of Langgraph**
+- 🎨 **How AI Agents works**
 - 📦 **More know about AI development**
 
 ---
@@ -534,16 +583,12 @@ color: green
 
 <div class="text-xl mt-8">
 
-https://business.udemy.com/resources/top-work-employee-skills-2025/
+https://github.com/abhishekmaroon5/langgraph-cookbook/
 
-https://github.com/wahyudesu/Fastapi-AI-Production-Template
+https://langchain-ai.github.io/langgraph/
 
-https://github.com/wahyudesu/langchain-workshop
+https://github.com/wahyudesu/langchain-workshop-2
 
-https://python.langchain.com/docs/introduction/
-
-https://github.com/langchain-ai/langchain/tree/master/cookbook
-
-https://www.pinecone.io/learn/series/langchain/
+https://docs.langchain.com/oss/python/langchain/overview
 
 </div>

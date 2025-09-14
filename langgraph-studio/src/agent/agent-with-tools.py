@@ -19,8 +19,6 @@ tool = TavilySearch(max_results=2)
 tools = [tool]
 llm_with_tools = llm.bind_tools(tools)
 
-
-
 class State(TypedDict):
     messages: Annotated[list, add_messages]
 

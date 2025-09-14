@@ -169,9 +169,11 @@ def supervisor_agent(state):
     return supervisor_chain.invoke(state)
 
 # Define the state
+@dataclass
 class AgentState(TypedDict):
     messages: Annotated[Sequence[HumanMessage], operator.add]
     next: str
+    
 # Helper Function for Agent Nodes
 def agent_node(state, agent, name):
     result = agent.invoke({"messages": state["messages"]})
